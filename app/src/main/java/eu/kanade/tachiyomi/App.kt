@@ -218,7 +218,11 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
     override fun getPackageName(): String {
         try {
             // Override the value passed as X-Requested-With in WebView requests
+            val e = Exception()
+            logcat(LogPriority.ERROR, e) { "getPackageName" }
             val stackTrace = Looper.getMainLooper().thread.stackTrace
+            e.stackTrace = stackTrace
+            logcat(LogPriority.ERROR, e) { "getPackageName(thread)" }
             val isChromiumCall = stackTrace.any { trace ->
                 trace.className.equals("org.chromium.base.BuildInfo", ignoreCase = true) &&
                     setOf("getAll", "getPackageName", "<init>").any { trace.methodName.equals(it, ignoreCase = true) }
